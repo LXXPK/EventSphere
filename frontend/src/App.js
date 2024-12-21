@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Register from './controller/register';
+import Authenticate from './controller/authenticate';
 
 function App() {
+  const [showRegister, setShowRegister] = useState(false);
+  const [showAuthenticate, setShowAuthenticate] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Welcome to Event Manager</h1>
+      <button onClick={() => { setShowRegister(true); setShowAuthenticate(false); }}>Click to Register</button>
+      <button onClick={() => { setShowAuthenticate(true); setShowRegister(false); }}>Click Here to Verify</button>
+
+      {showRegister && <Register />}
+      {showAuthenticate && <Authenticate />}
     </div>
   );
 }
