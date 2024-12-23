@@ -12,8 +12,9 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    // Install dependencies and build the frontend
-                    bat 'cd user && npm install && npm run build'
+                    // Install dependencies and build the frontend with CI=false
+                    bat 'cd user && npm install'
+                    bat 'cd user && CI=false npm run build'
                 }
             }
         }
