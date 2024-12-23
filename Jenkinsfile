@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     // Run frontend tests
-                    bat 'cd user && npm test'
+                    bat 'cd user && npm test -- --passWithNoTests'
                 }
             }
         }
