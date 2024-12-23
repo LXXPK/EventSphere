@@ -12,6 +12,7 @@ const PostEvent = () => {
       const response = await axios.post("api/events/create", newEvent, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
+      console.log(response);
       alert("Event posted successfully!");
       setNewEvent({ name: "", description: "", date: "" });
       setError(""); 
