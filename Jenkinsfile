@@ -1,19 +1,36 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Build Backend') {
             steps {
-                echo 'Building...'
+                script {
+                    // Install dependencies and build the backend
+                    sh 'cd server && npm install'
+                }
             }
         }
-        stage('Test') {
+        stage('Build Frontend') {
             steps {
-                echo 'Testing...'
+                script {
+                    // Install dependencies and build the frontend
+                    sh 'cd user && npm install && npm run build'
+                }
             }
         }
-        stage('Deploy') {
+        stage('Test Backend') {
             steps {
-                echo 'Deploying...'
+                script {
+                    // Run backend tests
+                    sh 'cd server && npm test'
+                }
+            }
+        }
+        stage('Test Frontend') {
+            steps {
+                script {
+                    // Run frontend tests
+                    sh 'cd user && npm test'
+                }
             }
         }
     }
