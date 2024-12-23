@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     // Install dependencies and build the backend
-                    sh 'cd server && npm install'
+                    bat 'cd server && npm install'
                 }
             }
         }
@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Install dependencies and build the frontend
-                    sh 'cd user && npm install && npm run build'
+                    bat 'cd user && npm install && npm run build'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Run backend tests
-                    sh 'cd server && npm test'
+                    bat 'cd server && npm test'
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     // Run frontend tests
-                    sh 'cd user && npm test'
+                    bat 'cd user && npm test'
                 }
             }
         }
