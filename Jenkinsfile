@@ -14,7 +14,7 @@ pipeline {
                 script {
                     // Install dependencies and build the frontend with CI=false
                     bat 'cd user && npm install'
-                    bat 'cd user && CI=false npm run build'
+                    bat 'cd user && set CI=false && npm run build'
                 }
             }
         }
