@@ -1,0 +1,34 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: user/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://backend:5000  # Correct API URL for frontend
+
+  backend:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongodb:27017/event_registration  # MongoDB URI with Docker service name
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"  # Expose MongoDB to the backend
+    volumes:
+      - mongodb_data:/data/db  # Persist database data across container restarts
+
+volumes:
+  mongodb_data:
