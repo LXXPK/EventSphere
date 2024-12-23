@@ -1,43 +1,30 @@
 const Participant = require('../models/Participant');
-const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
+const QRCode = require('qrcode');
 
-// Register participant and generate QR code
-exports.registerParticipant = async (req, res) => {
-  const { name, email } = req.body;
-  const id = uuidv4();
-  const qrCodeData = await QRCode.toDataURL(id);
 
-  const participant = new Participant({ name, email, qrCode: id });
-  await participant.save();
 
-  res.json({ qrCode: qrCodeData, participant });
-};
 
-// Check-in participant by QR code
 exports.checkInParticipant = async (req, res) => {
-  const { qrCode } = req.body;  // UUID received from the QR code scan
+  const { userId } = req.body;
 
-  // Debugging: Log the UUID received in the request
-  console.log("Received QR Code:", qrCode);
+  try {
 
-  // Find participant by UUID
-  const participant = await Participant.findOne({ qrCode });
+    const participant = await Participant.findOne({ userId });
 
-  // Debugging: Log the participant found
-  console.log("Participant found:", participant);
+    if (!participant) {
+      return res.status(404).json({ message: 'Participant not found' });
+    }
 
-  if (!participant) {
-    return res.json({ message: "Participant not found" });
+    if (participant.isCheckedIn) {
+      return res.status(400).json({ message: 'Participant already checked-in' });
+    }
+
+    participant.isCheckedIn = true;
+    await participant.save();
+
+    res.json({ message: 'Check-in successful', participant });
+  } catch (err) {
+    res.status(500).json({ message: 'Error during check-in', error: err });
   }
-
-  if (participant.isCheckedIn) {
-    return res.json({ message: "Already checked in" });
-  }
-
-  participant.isCheckedIn = true;
-  await participant.save();
-
-  res.json({ message: "Check-in successful", participant });
 };
-
